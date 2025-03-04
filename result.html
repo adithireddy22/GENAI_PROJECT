@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landmark Description</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Landmark Description</h1>
+        <img src="{{ image_path }}" alt="Uploaded Landmark Image" width="300">
+        <p><strong>Description:</strong> {{ description }}</p>
+        <a href="/">Upload Another Image</a>
+    </div>
+</body>
+</html>

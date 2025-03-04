@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landmark Description</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Upload a Landmark Image</h1>
+        
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" id="imageInput" name="image" accept="image/*" required>
+            <button type="submit">Upload</button>
+        </form>
+        
+        <div id="output">
+            <h2><b>Description</b></h2>
+            <p id="description"><i>No description available.</i></p>
+            
+            <h2><b>Recommendations</b></h2>
+            <p id="recommendations"><i>No recommendations available.</i></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let fileInput = document.getElementById("imageInput");
+            if (fileInput.files.length === 0) {
+                alert("Please select a file before uploading.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("image", fileInput.files[0]);
+
+            fetch("/upload", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById("description").innerHTML = `<b>Error:</b> ${data.error}`;
+                    document.getElementById("recommendations").innerHTML = "";
+                } else {
+                    document.getElementById("description").innerHTML = `<b>${data.description}</b>`;
+                    document.getElementById("recommendations").innerHTML = `<b>${data.recommendations}</b>`;
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+</html>
